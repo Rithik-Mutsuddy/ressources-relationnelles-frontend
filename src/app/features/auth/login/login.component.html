@@ -1,0 +1,64 @@
+
+<div class="auth-page">
+  <div class="auth-card">
+    <h1 class="auth-card__title">Connexion</h1>
+    <p class="auth-card__subtitle">
+      Connectez-vous à votre compte pour accéder à votre espace personnel
+    </p>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="auth-form">
+
+      <div class="form-group">
+        <label class="form-label" for="email">Email</label>
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          class="form-input"
+          placeholder="votre@email.com"
+        />
+      </div>
+
+      <div class="form-group">
+        <div class="form-label-row">
+          <label class="form-label" for="password">Mot de passe</label>
+          <a href="#" class="form-label-link">Mot de passe oublié ?</a>
+        </div>
+        <input
+          id="password"
+          type="password"
+          formControlName="password"
+          class="form-input"
+          placeholder="••••••••"
+        />
+      </div>
+
+      @if (error()) {
+        <div class="auth-error">{{ error() }}</div>
+      }
+
+      <button
+        type="submit"
+        class="btn btn--primary btn--full"
+        [disabled]="form.invalid || loading()"
+      >
+        {{ loading() ? 'Connexion...' : 'Se connecter' }}
+      </button>
+    </form>
+
+    <p class="auth-card__link">
+      Pas encore de compte ?
+      <a routerLink="/auth/register" class="link">S'inscrire</a>
+    </p>
+
+    <div class="auth-divider">
+      <span>ou</span>
+    </div>
+
+    <!-- Bouton FranceConnect -->
+    <button class="fc-btn" type="button" (click)="loginWithFc()">
+      <span class="fc-btn__logo">FC</span>
+      S'identifier avec FranceConnect
+    </button>
+  </div>
+</div>

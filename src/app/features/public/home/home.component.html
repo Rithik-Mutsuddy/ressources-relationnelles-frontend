@@ -1,0 +1,125 @@
+
+<!-- HERO (image 4) -->
+<section class="hero">
+    <div class="hero__content">
+        <h1 class="hero__title">
+            Explorez les ressources de la<br>
+            <span class="hero__title-accent">participation citoyenne</span>
+        </h1>
+        <p class="hero__subtitle">
+            Découvrez, partagez et exploitez des ressources pour renforcer l'engagement citoyen<br>
+            dans votre territoire.
+        </p>
+
+        <div class="hero__search">
+            <div class="hero__search-input-wrap">
+                <svg class="hero__search-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"
+                    width="18" height="18">
+                    <circle cx="8" cy="8" r="5" />
+                    <path d="m14 14 4 4" />
+                </svg>
+                <input class="hero__search-input" type="text" placeholder="Rechercher une ressource..."
+                    [(ngModel)]="searchQuery" (keydown)="onSearchKeydown($event)" />
+            </div>
+            <button class="btn btn--primary" (click)="onSearch()">Rechercher</button>
+        </div>
+
+        <div class="hero__ctas">
+            <a routerLink="/resources" class="btn btn--primary">
+                Explorer le catalogue &nbsp;→
+            </a>
+            <a routerLink="/auth/register" class="btn btn--outline">Créer un compte</a>
+        </div>
+    </div>
+</section>
+
+<!-- CATÉGORIES (image 5) -->
+<section class="categories">
+    <div class="section-header">
+        <h2 class="section-title">Explorez par catégorie</h2>
+        <p class="section-subtitle">Trouvez des ressources adaptées à vos besoins</p>
+    </div>
+
+    <div class="categories__grid">
+        @for (cat of categories(); track cat.id) {
+        <a class="category-card" [routerLink]="['/resources']" [queryParams]="{ categoryId: cat.id }">
+            <div class="category-card__icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="28" height="28">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+                </svg>
+            </div>
+            <span class="category-card__name">{{ cat.name }}</span>
+        </a>
+        }
+    </div>
+</section>
+
+<!-- RESSOURCES POPULAIRES (image 6) -->
+<section class="popular">
+    <div class="popular__header">
+        <div>
+            <h2 class="section-title">Ressources populaires</h2>
+            <p class="section-subtitle">Les ressources les plus consultées par la communauté</p>
+        </div>
+        <a routerLink="/resources" class="btn btn--outline btn--sm">Voir tout</a>
+    </div>
+
+    <div class="popular__grid">
+        @for (resource of popularResources(); track resource.id) {
+        <a class="resource-card" [routerLink]="['/resources', resource.id]">
+            <div class="resource-card__header">
+                <span class="badge" [class]="getTypeBadgeClass(resource.type)">
+                    {{ getTypeLabel(resource.type) }}
+                </span>
+            </div>
+            <h3 class="resource-card__title">{{ resource.title }}</h3>
+            <p class="resource-card__desc">{{ resource.content | slice:0:120 }}...</p>
+            <div class="resource-card__footer">
+                <span class="resource-card__views">
+                    <svg viewBox="0 0 20 20" fill="currentColor" width="14" height="14">
+                        <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                        <path fill-rule="evenodd"
+                            d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
+                            clip-rule="evenodd" />
+                    </svg>
+                    1234
+                </span>
+                <div class="resource-card__tags">
+                    <span class="tag">participation</span>
+                    <span class="tag">citoyenneté</span>
+                </div>
+            </div>
+        </a>
+        }
+    </div>
+</section>
+
+<!-- STATS (image 7) -->
+<section class="stats">
+    <div class="stats__grid">
+        <div class="stat">
+            <span class="stat__number stat__number--blue">{{ stats.resources }}+</span>
+            <span class="stat__label">Ressources disponibles</span>
+        </div>
+        <div class="stat">
+            <span class="stat__number stat__number--green">{{ stats.users }}+</span>
+            <span class="stat__label">Utilisateurs actifs</span>
+        </div>
+        <div class="stat">
+            <span class="stat__number stat__number--orange">{{ stats.categories }}</span>
+            <span class="stat__label">Catégories thématiques</span>
+        </div>
+    </div>
+</section>
+
+<!-- CTA BANNER (image 7 + 8) -->
+<section class="cta-banner">
+    <h2 class="cta-banner__title">Prêt à contribuer ?</h2>
+    <p class="cta-banner__desc">
+        Rejoignez notre communauté et partagez vos ressources pour enrichir la<br>
+        participation citoyenne.
+    </p>
+    <a routerLink="/auth/register" class="btn btn--white">Créer un compte gratuitement &nbsp;→</a>
+</section>
+

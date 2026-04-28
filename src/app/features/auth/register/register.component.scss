@@ -1,0 +1,19 @@
+// Identique à login.component.scss — partager via un _auth-shared.scss
+@use '../login/login.component' as *; // ou dupliquer les styles
+
+.auth-success {
+  background: #ecfdf5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 13px;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.form-hint {
+  font-size: 12px;
+  color: #9ca3af;
+  &--error { color: #dc2626; }
+}

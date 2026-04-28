@@ -1,0 +1,95 @@
+
+<div class="catalogue">
+  <!-- En-tête -->
+  <div class="catalogue__header">
+    <h1 class="catalogue__title">Catalogue des ressources</h1>
+    <p class="catalogue__subtitle">Explorez notre collection de ressources sur la participation citoyenne</p>
+
+    <div class="catalogue__search-bar">
+      <svg viewBox="0 0 20 20" fill="none" stroke="#9ca3af" stroke-width="2" width="18" height="18">
+        <circle cx="8" cy="8" r="5"/><path d="m14 14 4 4"/>
+      </svg>
+      <input
+        type="text"
+        placeholder="Rechercher par titre, description ou tags..."
+        [(ngModel)]="searchQuery"
+        class="catalogue__search-input"
+      />
+    </div>
+  </div>
+
+  <!-- Corps -->
+  <div class="catalogue__body">
+
+    <!-- Sidebar filtres (image 11 + 12) -->
+    <aside class="filters">
+      <h3 class="filters__title">Filtres</h3>
+
+      <div class="filters__group">
+        <h4 class="filters__label">Type de ressource</h4>
+        @for (t of TYPES; track t.value) {
+          <label class="filters__item">
+            <input
+              type="checkbox"
+              [checked]="isTypeSelected(t.value)"
+              (change)="toggleType(t.value)"
+            />
+            {{ t.label }}
+          </label>
+        }
+      </div>
+
+      <div class="filters__group">
+        <h4 class="filters__label">Catégorie</h4>
+        @for (cat of categories(); track cat.id) {
+          <label class="filters__item">
+            <input
+              type="checkbox"
+              [checked]="isCatSelected(cat.id)"
+              (change)="toggleCat(cat.id)"
+            />
+            {{ cat.name }}
+          </label>
+        }
+      </div>
+    </aside>
+
+    <!-- Liste des ressources -->
+    <main class="results">
+      <p class="results__count">{{ filteredResources.length }} ressources trouvées</p>
+
+      <div class="results__grid">
+        @for (r of filteredResources; track r.id) {
+          <a class="rcard" [routerLink]="['/resources', r.id]">
+            <div class="rcard__top">
+              <span class="badge" [class]="getBadgeClass(r.type)">
+                {{ getTypeLabel(r.type) }}
+              </span>
+            </div>
+            <h3 class="rcard__title">{{ r.title }}</h3>
+            <p class="rcard__desc">{{ r.content | slice:0:130 }}...</p>
+            <div class="rcard__footer">
+              <span class="rcard__views">
+                <svg viewBox="0 0 20 20" fill="currentColor" width="14" height="14">
+                  <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+                  <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/>
+                </svg>
+                1234
+              </span>
+              <div class="rcard__tags">
+                <span class="tag">participation</span>
+              </div>
+            </div>
+          </a>
+        }
+
+        @empty {
+          <div class="results__empty">
+            <p>Aucune ressource ne correspond à votre recherche.</p>
+          </div>
+        }
+      </div>
+    </main>
+  </div>
+</div>
+
