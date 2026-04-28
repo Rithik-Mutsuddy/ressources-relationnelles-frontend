@@ -58,11 +58,11 @@ export const routes: Routes = [
   },
 
   // ── Utilitaires ─────────────────────────────────────────────
-  {
+ /* {
     path: 'forbidden',
     loadComponent: () =>
       import('./shared/components/forbidden/forbidden.component')
         .then(m => m.ForbiddenComponent)
-  },
+  },*/
   { path: '**', redirectTo: '/home' }
 ];

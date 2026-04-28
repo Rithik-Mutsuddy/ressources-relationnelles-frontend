@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 
 export const CITIZEN_ROUTES: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-  {
+ /* {
     path: 'dashboard',
     loadComponent: () =>
       import('./dashboard/dashboard.component').then(m => m.DashboardComponent)
@@ -50,5 +50,5 @@ export const CITIZEN_ROUTES: Routes = [
     loadComponent: () =>
       import('./activities/activity-detail/activity-detail.component')
         .then(m => m.ActivityDetailComponent)
-  }
+  }*/
 ];
