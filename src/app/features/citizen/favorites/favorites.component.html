@@ -1,0 +1,20 @@
+<div class="page-header">
+  <h1 class="page-title">
+    <svg viewBox="0 0 20 20" fill="#ef4444" width="28" height="28">
+      <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"/>
+    </svg>
+    Mes favoris
+  </h1>
+  <p class="page-sub">Retrouvez toutes vos ressources favorites en un seul endroit</p>
+</div>
+
+@if (favorites().length === 0) {
+  <div class="empty-favorites">
+    <svg viewBox="0 0 20 20" fill="none" stroke="#d1d5db" stroke-width="1.2" width="56" height="56">
+      <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"/>
+    </svg>
+    <p class="empty-favorites__title">Vous n'avez pas encore de favoris</p>
+    <p class="empty-favorites__sub">Explorez le catalogue et ajoutez vos ressources préférées</p>
+    <a routerLink="/resources" class="btn btn--primary">Explorer le catalogue</a>
+  </div>
+}

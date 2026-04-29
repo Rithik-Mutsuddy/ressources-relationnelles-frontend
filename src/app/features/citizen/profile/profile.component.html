@@ -1,0 +1,111 @@
+<div class="page-header">
+  <h1 class="page-title">Mon profil</h1>
+  <p class="page-sub">Gérez vos informations personnelles et vos préférences</p>
+</div>
+
+<!-- Informations personnelles (image 8 + 10) -->
+<div class="profile-card">
+  <div class="profile-card__header">
+    <h2 class="profile-card__title">Informations personnelles</h2>
+    @if (!editing()) {
+      <button class="btn btn--outline btn--sm" (click)="startEdit()">Modifier</button>
+    }
+  </div>
+
+  <!-- Avatar -->
+  <div class="profile-avatar-row">
+    <div class="profile-avatar">{{ getInitial() }}</div>
+    @if (editing()) {
+      <button class="btn btn--outline btn--sm">Changer l'avatar</button>
+    }
+  </div>
+
+  @if (!editing()) {
+    <!-- Mode lecture (image 8) -->
+    <dl class="profile-info">
+      <div class="profile-info__row">
+        <dt>Nom complet</dt>
+        <dd>
+          <svg viewBox="0 0 20 20" fill="currentColor" width="14" height="14"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/></svg>
+          {{ getFullName() }}
+        </dd>
+      </div>
+      <div class="profile-info__row">
+        <dt>Email</dt>
+        <dd>
+          <svg viewBox="0 0 20 20" fill="currentColor" width="14" height="14"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/></svg>
+          {{ user()?.email }}
+        </dd>
+      </div>
+      <div class="profile-info__row">
+        <dt>Rôle</dt>
+        <dd>
+          <svg viewBox="0 0 20 20" fill="currentColor" width="14" height="14"><path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+          {{ getRoleLabel() }}
+        </dd>
+      </div>
+      <div class="profile-info__row">
+        <dt>Membre depuis</dt>
+        <dd>
+          <svg viewBox="0 0 20 20" fill="currentColor" width="14" height="14"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/></svg>
+          {{ user()?.createdAt | date:'dd/MM/yyyy' }}
+        </dd>
+      </div>
+    </dl>
+  } @else {
+    <!-- Mode édition (image 10) -->
+    <div class="profile-form">
+      <div class="form-group">
+        <label class="form-label">Nom complet</label>
+        <div class="form-input-icon">
+          <svg viewBox="0 0 20 20" fill="currentColor" width="14" height="14"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/></svg>
+          <input type="text" [(ngModel)]="editFullName" class="form-input" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <div class="form-input-icon">
+          <svg viewBox="0 0 20 20" fill="currentColor" width="14" height="14"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/></svg>
+          <input type="email" [value]="user()?.email" class="form-input" readonly />
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Rôle</label>
+        <div class="form-input-icon">
+          <svg viewBox="0 0 20 20" fill="currentColor" width="14" height="14"><path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+          <input type="text" [value]="getRoleLabel()" class="form-input" readonly />
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Membre depuis</label>
+        <div class="form-input-icon">
+          <svg viewBox="0 0 20 20" fill="currentColor" width="14" height="14"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/></svg>
+          <input type="text" [value]="user()?.createdAt | date:'dd/MM/yyyy'" class="form-input" readonly />
+        </div>
+      </div>
+
+      <div class="profile-form__actions">
+        <button class="btn btn--primary" (click)="saveEdit()">Sauvegarder</button>
+        <button class="btn btn--outline" (click)="cancelEdit()">Annuler</button>
+      </div>
+    </div>
+  }
+</div>
+
+<!-- Confidentialité (image 9) -->
+<div class="profile-card" style="margin-top: 1.25rem">
+  <h2 class="profile-card__title">Confidentialité et données</h2>
+  <h3 class="profile-card__subtitle">Gestion des données (RGPD)</h3>
+  <p class="profile-card__desc">Vous avez le droit d'accéder, de modifier ou de supprimer vos données personnelles.</p>
+
+  <div class="profile-actions">
+    <button class="btn btn--outline btn--block">Télécharger mes données</button>
+    <button class="btn btn--danger btn--block">Supprimer mon compte</button>
+  </div>
+</div>
+
+<!-- Sécurité -->
+<div class="profile-card" style="margin-top: 1.25rem">
+  <h2 class="profile-card__title">Sécurité</h2>
+  <button class="btn btn--outline btn--sm">Changer le mot de passe</button>
+</div>

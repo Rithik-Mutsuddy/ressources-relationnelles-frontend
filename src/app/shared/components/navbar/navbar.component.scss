@@ -21,7 +21,7 @@
     &-logo {
       width: 32px;
       height: 32px;
-      background: #2563eb;
+      //background: #2563eb;
       border-radius: 6px;
       display: flex;
       align-items: center;
@@ -84,4 +84,34 @@
       &:hover { background: #f3f4f6; color: #374151; }
     }
   }
+}
+
+
+.navbar__brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.navbar__brand-logo {
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden; // empêche débordement
+}
+
+.navbar__brand-logo img {
+  width: 55px;
+  height: 55px;
+  object-fit: contain; // garde les proportions sans déformation
+}
+
+.navbar__brand-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: #111827;
+  white-space: nowrap;
 }

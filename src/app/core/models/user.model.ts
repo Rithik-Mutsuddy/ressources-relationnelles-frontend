@@ -14,6 +14,7 @@ export interface User {
   roles: UserRole[];
   authProvider: AuthProvider;
   isVerified: boolean;
+  createdAt: string;
 }
 
 export interface AuthResponse {

@@ -1,0 +1,59 @@
+<!-- En-tête -->
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Mes ressources</h1>
+    <p class="page-sub">Gérez vos ressources créées et en cours de rédaction</p>
+  </div>
+  <a routerLink="/citizen/resources/create" class="btn btn--primary">
+    + Créer
+  </a>
+</div>
+
+<!-- Onglets de filtre (image 3) -->
+<div class="tabs">
+  @for (tab of tabs(); track tab.key) {
+    <button
+      class="tab"
+      [class.tab--active]="activeTab() === tab.key"
+      (click)="activeTab.set(tab.key)"
+    >
+      {{ tab.label }} ({{ tab.count }})
+    </button>
+  }
+</div>
+
+<!-- Grille de ressources -->
+<div class="res-grid">
+  @for (r of displayed; track r.id) {
+    <a [routerLink]="['/resources', r.id]" class="rcard">
+      <div class="rcard__top">
+        <span class="badge" [class]="getTypeBadgeClass(r.type)">
+          {{ getTypeLabel(r.type) }}
+        </span>
+        <span class="status" [class]="getStatusBadgeClass(r.status)">
+          {{ getStatusLabel(r.status) }}
+        </span>
+      </div>
+      <h3 class="rcard__title">{{ r.title }}</h3>
+      <p class="rcard__desc">{{ r.content | slice:0:120 }}...</p>
+      <div class="rcard__footer">
+        <span class="rcard__views">
+          <svg viewBox="0 0 20 20" fill="currentColor" width="13" height="13">
+            <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+            <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/>
+          </svg>
+          1234
+        </span>
+        <div class="rcard__tags">
+          <span class="tag">participation</span>
+        </div>
+      </div>
+    </a>
+  }
+
+  @empty {
+    <div class="empty-state">
+      <p>Aucun brouillon</p>
+    </div>
+  }
+</div>

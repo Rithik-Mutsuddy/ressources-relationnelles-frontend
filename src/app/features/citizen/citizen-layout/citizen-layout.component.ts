@@ -1,36 +1,21 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, computed } from '@angular/core';
+import { RouterLink, RouterLinkActive, RouterOutlet, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../../core/auth/auth.service';
+import { NavbarComponent } from '../../../shared/components/navbar/navbar.component';
 
 @Component({
-  selector: 'app-profile',
+  selector: 'app-citizen-layout',
   standalone: true,
-  imports: [CommonModule, FormsModule],
-  templateUrl: './profile.component.html',
-  styleUrl: './profile.component.scss'
+  imports: [RouterLink, RouterLinkActive, RouterOutlet, CommonModule, NavbarComponent],
+  templateUrl: './citizen-layout.component.html',
+  styleUrl: './citizen-layout.component.scss'
 })
-export class ProfileComponent {
+export class CitizenLayoutComponent {
   auth   = inject(AuthService);
-  user   = this.auth.currentUser;
+  router = inject(Router);
 
-  editing = signal(false);
-  editFullName = '';
-
-  startEdit() {
-    const u = this.user();
-    this.editFullName = `${u?.firstname ?? ''} ${u?.lastname ?? ''}`.trim();
-    this.editing.set(true);
-  }
-
-  cancelEdit() {
-    this.editing.set(false);
-  }
-
-  saveEdit() {
-    // Appel API pour mettre à jour le profil
-    this.editing.set(false);
-  }
+  user = this.auth.currentUser;
 
   getInitial(): string {
     return this.user()?.firstname?.charAt(0).toUpperCase() ?? '?';

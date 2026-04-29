@@ -1,0 +1,163 @@
+$blue: #2563eb;
+
+.page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.page-title { font-size: 1.75rem; font-weight: 700; color: #111827; margin: 0 0 4px; }
+.page-sub   { font-size: 14px; color: #6b7280; margin: 0; }
+
+// Onglets
+.tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 1.5rem;
+  background: #f3f4f6;
+  padding: 4px;
+  border-radius: 10px;
+  width: fit-content;
+}
+
+.tab {
+  padding: 8px 18px;
+  border-radius: 7px;
+  border: none;
+  background: transparent;
+  font-size: 14px;
+  font-weight: 500;
+  color: #6b7280;
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s;
+
+  &:hover  { color: #374151; }
+
+  &--active {
+    background: #fff;
+    color: #111827;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+}
+
+// Grille
+.res-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.rcard {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 18px;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: box-shadow 0.15s;
+  &:hover { box-shadow: 0 4px 14px rgba(0,0,0,0.07); }
+
+  &__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #111827;
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  &__desc {
+    font-size: 13px;
+    color: #6b7280;
+    line-height: 1.6;
+    margin: 0;
+    flex: 1;
+  }
+
+  &__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: auto;
+  }
+
+  &__views {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 13px;
+    color: #9ca3af;
+  }
+
+  &__tags { display: flex; gap: 6px; }
+}
+
+// Badges type
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  &--blue   { background: #eff6ff; color: #1d4ed8; }
+  &--purple { background: #f5f3ff; color: #6d28d9; }
+  &--green  { background: #ecfdf5; color: #065f46; }
+  &--orange { background: #fff7ed; color: #c2410c; }
+}
+
+// Statuts
+.status {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+
+  &--published { background: #ecfdf5; color: #16a34a; }
+  &--pending   { background: #fffbeb; color: #d97706; }
+  &--rejected  { background: #fef2f2; color: #dc2626; }
+  &--draft     { background: #f3f4f6; color: #6b7280; }
+}
+
+.tag {
+  background: #f3f4f6;
+  color: #374151;
+  border-radius: 4px;
+  padding: 3px 8px;
+  font-size: 12px;
+}
+
+.empty-state {
+  grid-column: 1 / -1;
+  background: #f9fafb;
+  border-radius: 10px;
+  padding: 3rem;
+  text-align: center;
+  color: #9ca3af;
+  font-size: 14px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 18px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+  &--primary { background: $blue; color: #fff; &:hover { background: #1d4ed8; } }
+}
