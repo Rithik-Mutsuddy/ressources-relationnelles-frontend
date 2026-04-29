@@ -13,15 +13,15 @@ import { Router } from '@angular/router';
   styleUrl: './navbar.component.scss'
 })
 export class NavbarComponent {
-  private auth   = inject(AuthService);
-  private fc     = inject(FranceConnectService);
+  private auth = inject(AuthService);
+  private fc = inject(FranceConnectService);
   private router = inject(Router);
 
-  user            = this.auth.currentUser;
+  user = this.auth.currentUser;
   isAuthenticated = this.auth.isAuthenticated;
-  isModerator     = this.auth.isModerator;
-  isAdmin         = this.auth.isAdmin;
-  isSuperAdmin    = this.auth.isSuperAdmin;
+  isModerator = this.auth.isModerator;
+  isAdmin = this.auth.isAdmin;
+  isSuperAdmin = this.auth.isSuperAdmin;
 
   // Vrai si on est dans une vue backoffice
   isBackoffice = computed(() =>
@@ -49,7 +49,11 @@ export class NavbarComponent {
   navigateToBackoffice() {
     const roles = this.user()?.roles ?? [];
     if (roles.includes('ROLE_SUPER_ADMIN')) this.router.navigate(['/superadmin/accounts']);
-    else if (roles.includes('ROLE_ADMIN'))   this.router.navigate(['/admin/dashboard']);
+    else if (roles.includes('ROLE_ADMIN')) this.router.navigate(['/admin/dashboard']);
     else if (roles.includes('ROLE_MODERATOR')) this.router.navigate(['/moderator/pending']);
+  }
+
+  goToCitizen() {
+    this.router.navigate(['/citizen']);
   }
 }
