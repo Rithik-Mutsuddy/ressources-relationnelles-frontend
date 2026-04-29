@@ -1,0 +1,37 @@
+.footer {
+  background: #f9fafb;
+  border-top: 1px solid #e5e7eb;
+  padding: 3rem 2rem 0;
+
+  &__body {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+    padding-bottom: 2.5rem;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  &__col { display: flex; flex-direction: column; gap: 10px; }
+
+  &__heading {
+    font-size: 14px;
+    font-weight: 600;
+    color: #111827;
+    margin: 0 0 4px;
+  }
+
+  &__link {
+    font-size: 14px;
+    color: #6b7280;
+    text-decoration: none;
+    &:hover { color: #2563eb; }
+  }
+
+  &__bottom {
+    text-align: center;
+    padding: 1.25rem;
+    p { font-size: 13px; color: #9ca3af; margin: 0; }
+  }
+}

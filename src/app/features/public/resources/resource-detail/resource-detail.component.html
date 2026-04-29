@@ -1,0 +1,251 @@
+<div class="detail">
+  @if (resource(); as res) {
+
+  <a routerLink="/resources" class="detail__back">
+    ← Retour au catalogue
+  </a>
+
+  <div class="detail__layout">
+
+    <!-- COLONNE GAUCHE -->
+    <div class="detail__content">
+
+      <!-- ARTICLE -->
+      <article class="detail__main">
+
+        <div class="detail__badges">
+          <span class="badge" [class]="getTypeBadgeClass(res.type)">
+            {{ res.type | titlecase }}
+          </span>
+
+          @if (res.category) {
+          <span class="badge badge--gray">
+            {{ res.category.name }}
+          </span>
+          }
+        </div>
+
+        <h1 class="detail__title">{{ res.title }}</h1>
+
+        <div class="detail__meta">
+          <span>{{ res.author.firstname }} {{ res.author.lastname }}</span>
+          <span>{{ res.createdAt | date:'dd/MM/yyyy' }}</span>
+          <span>2103 vues</span>
+        </div>
+
+        <hr class="detail__divider" />
+
+        <section class="detail__section">
+          <h2>Description</h2>
+          <p>{{ res.content | slice:0:200 }}</p>
+        </section>
+
+        <section class="detail__section">
+          <h2>Contenu</h2>
+          <p>{{ res.content }}</p>
+        </section>
+
+        <section class="detail__section">
+          <h2>Tags</h2>
+          <div class="detail__tags">
+            <span class="tag">participation</span>
+            <span class="tag">citoyenneté</span>
+            <span class="tag">engagement</span>
+          </div>
+        </section>
+
+      </article>
+
+      <!-- COMMENTAIRES -->
+      <section class="comments">
+
+        <h2 class="comments__title">
+          Commentaires ({{ comments().length }})
+        </h2>
+
+        @if (auth.isAuthenticated()) {
+        <div class="comments__form">
+          <textarea [(ngModel)]="newComment" class="comments__textarea" rows="3"
+            placeholder="Écrire un commentaire..."></textarea>
+
+          <button class="btn btn--primary btn--sm" (click)="submitComment()">
+            Publier
+          </button>
+        </div>
+        } @else {
+        <div class="comments__login-prompt">
+          <p>Connectez-vous pour commenter</p>
+          <a routerLink="/auth/login" class="btn btn--outline btn--sm">
+            Se connecter
+          </a>
+        </div>
+        }
+
+        <div class="comments__list" [class.comments__list--scroll]="comments().length > 10">
+
+          @for (comment of comments(); track comment.id) {
+
+          @if (!comment.parentId) {
+
+          <div class="comment">
+
+            <div class="comment__avatar">
+              {{ getInitial(comment.user.firstname) }}
+            </div>
+
+            <div class="comment__body">
+
+              <!-- HEADER -->
+              <div class="comment__header">
+
+                <div class="comment__info">
+                  <span class="comment__name">
+                    {{ comment.user.firstname }} {{ comment.user.lastname }}
+                  </span>
+
+                  <span class="comment__date">
+                    {{ comment.createdAt | date:'dd/MM/yyyy' }}
+                  </span>
+                </div>
+
+                @if (auth.currentUser()?.roles?.includes('ROLE_USER')) {
+                <button class="comment__edit-btn" (click)="startReply(comment)">
+                  ✏️
+                </button>
+                }
+
+              </div>
+
+              <p class="comment__text">
+                {{ comment.content }}
+              </p>
+
+              <!-- zone réponse -->
+              @if (replyingTo()?.id === comment.id) {
+              <div class="comment__reply-box">
+
+                <textarea [(ngModel)]="replyContent" class="comments__textarea" rows="2"
+                  placeholder="Votre réponse..."></textarea>
+
+                <button class="btn btn--primary btn--sm" (click)="submitReply(comment)">
+                  Envoyer
+                </button>
+
+                <button class="btn btn--outline btn--sm" (click)="cancelReply()">
+                  Annuler
+                </button>
+
+              </div>
+              }
+
+              <!-- bouton voir réponses -->
+              @if (getReplies(comment.id).length > 0) {
+              <button class="comment__show-replies" (click)="toggleReplies(comment.id)">
+                @if (expandedReplies()[comment.id] !== true) {
+                Voir les réponses ({{ getReplies(comment.id).length }})
+                } @else {
+                Masquer les réponses
+                }
+              </button>
+              }
+
+              <!-- réponses -->
+              @if (expandedReplies()[comment.id] === true) {
+
+              <div class="comment__replies">
+
+
+
+                @for (reply of getReplies(comment.id); track reply.id) {
+
+                <div class="comment comment--reply">
+
+                  <div class="comment__avatar">
+                    {{ getInitial(reply.user.firstname) }}
+                  </div>
+
+                  <div class="comment__body">
+
+                    <!-- HEADER IDENTIQUE AUX COMMENTS -->
+                    <div class="comment__header">
+
+                      <div class="comment__info">
+                        <span class="comment__name">
+                          {{ reply.user.firstname }} {{ reply.user.lastname }}
+                        </span>
+
+                        <span class="comment__date">
+                          {{ reply.createdAt | date:'dd/MM/yyyy' }}
+                        </span>
+                      </div>
+
+                    </div>
+
+                    <p class="comment__text">
+                      {{ reply.content }}
+                    </p>
+
+                  </div>
+
+                </div>
+
+                }
+
+              </div>
+
+              }
+
+            </div>
+          </div>
+
+          }
+
+          }
+
+        </div>
+      </section>
+
+    </div>
+
+    <!-- SIDEBAR -->
+    <aside class="detail__sidebar">
+
+      <div class="detail__sidebar-card">
+        <h3>Actions</h3>
+
+        @if (auth.isAuthenticated()) {
+        <div class="action-buttons">
+
+          <button class="action-btn" [class.action-btn--active]="isFavorite()" (click)="toggleFavorite()">
+            Favori
+          </button>
+
+          @if (isAuthor()) {
+          <a [routerLink]="['/citizen/resources', res.id, 'edit']" class="action-btn">
+            Modifier
+          </a>
+          }
+
+        </div>
+        }
+      </div>
+
+      <div class="detail__sidebar-card">
+        <h3>Auteur</h3>
+
+        <div class="author">
+          <div class="author__avatar">
+            {{ getInitial(res.author.firstname) }}
+          </div>
+
+          <div>
+            <p>{{ res.author.firstname }} {{ res.author.lastname }}</p>
+          </div>
+        </div>
+      </div>
+
+    </aside>
+
+  </div>
+  }
+</div>
