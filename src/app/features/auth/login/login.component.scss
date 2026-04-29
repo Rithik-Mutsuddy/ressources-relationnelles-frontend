@@ -169,3 +169,14 @@ $blue: #2563eb;
   font-weight: 500;
   &:hover { text-decoration: underline; }
 }
+
+.fc-btn {
+  cursor: pointer;
+  width: 320px;   // adapte selon ton design
+  height: 100px;
+  transition: transform 0.2s ease;
+}
+
+.fc-btn:hover {
+  transform: scale(1.03);
+}

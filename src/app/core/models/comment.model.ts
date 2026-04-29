@@ -7,4 +7,6 @@ export interface Comment {
   isReported: boolean;
   user: Pick<User, 'id' | 'firstname' | 'lastname'>;
   replies?: Comment[];
+  resourceId: number;
+  parentId: number | null;
 }

@@ -10,6 +10,8 @@ import { Resource } from '../../../core/models/resource.model';
 import { Category } from '../../../core/models/category.model';
 import { NavbarComponent } from '../../../shared/components/navbar/navbar.component';
 import { FooterComponent } from '../../../shared/components/footer/footer.component';
+import { PlatformStatistics } from '../../../core/models/statistics.model';
+import { StatService } from '../../../core/services/stat.service';
 
 @Component({
   selector: 'app-home',
@@ -19,31 +21,40 @@ import { FooterComponent } from '../../../shared/components/footer/footer.compon
   styleUrl: './home.component.scss'
 })
 export class HomeComponent implements OnInit {
-  private resourceSvc  = inject(ResourceService);
-  private categorySvc  = inject(CategoryService);
-  private router       = inject(Router);
-  auth                 = inject(AuthService);
+  private resourceSvc = inject(ResourceService);
+  private categorySvc = inject(CategoryService);
+  private statsService = inject(StatService);
+  private router = inject(Router);
+  auth = inject(AuthService);
 
-  searchQuery  = '';
+  stats: PlatformStatistics = {
+    total_resources: 0,
+    total_users: 0,
+    pending: 0,
+    published: 0,
+    categories: 0
+  };
+
+  searchQuery = '';
   popularResources = signal<Resource[]>([]);
-  categories       = signal<Category[]>([]);
+  categories = signal<Category[]>([]);
 
-  // Statistiques affichées (image 7)
-  stats = { resources: 6, users: 500, categories: 8 };
+
 
   // Icônes par catégorie
   categoryIcons: Record<string, string> = {
-    'Démocratie':    'book',
-    'Méthodologie':  'users',
-    'Finances':      'trending-up',
-    'Inspiration':   'book',
-    'Technologie':   'users',
+    'Démocratie': 'book',
+    'Méthodologie': 'users',
+    'Finances': 'trending-up',
+    'Inspiration': 'book',
+    'Technologie': 'users',
     'Environnement': 'trending-up',
-    'Éducation':     'book',
-    'Culture':       'users',
+    'Éducation': 'book',
+    'Culture': 'users',
   };
 
   ngOnInit() {
+    this.statsService.getStats().subscribe(data => { this.stats = data; });
     this.resourceSvc.getAll().subscribe(r => this.popularResources.set(r.slice(0, 3)));
     this.categorySvc.getAll().subscribe(c => this.categories.set(c));
   }
@@ -62,10 +73,10 @@ export class HomeComponent implements OnInit {
 
   getTypeBadgeClass(type: string): string {
     const map: Record<string, string> = {
-      video:    'badge--purple',
-      article:  'badge--blue',
-      guide:    'badge--green',
-      podcast:  'badge--orange',
+      video: 'badge--purple',
+      article: 'badge--blue',
+      guide: 'badge--green',
+      podcast: 'badge--orange',
       document: 'badge--green',
     };
     return map[type] ?? 'badge--blue';
@@ -73,10 +84,10 @@ export class HomeComponent implements OnInit {
 
   getTypeIcon(type: string): string {
     const map: Record<string, string> = {
-      video:    '▶',
-      article:  '📄',
-      guide:    '📄',
-      podcast:  '🎙',
+      video: '▶',
+      article: '📄',
+      guide: '📄',
+      podcast: '🎙',
       document: '📄',
     };
     return map[type] ?? '📄';

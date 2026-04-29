@@ -97,20 +97,30 @@
 
 <!-- STATS (image 7) -->
 <section class="stats">
-    <div class="stats__grid">
-        <div class="stat">
-            <span class="stat__number stat__number--blue">{{ stats.resources }}+</span>
-            <span class="stat__label">Ressources disponibles</span>
-        </div>
-        <div class="stat">
-            <span class="stat__number stat__number--green">{{ stats.users }}+</span>
-            <span class="stat__label">Utilisateurs actifs</span>
-        </div>
-        <div class="stat">
-            <span class="stat__number stat__number--orange">{{ stats.categories }}</span>
-            <span class="stat__label">Catégories thématiques</span>
-        </div>
+  <div class="stats__grid">
+
+    <div class="stat">
+      <span class="stat__number stat__number--blue">
+        {{ stats.total_resources }}+
+      </span>
+      <span class="stat__label">Ressources disponibles</span>
     </div>
+
+    <div class="stat">
+      <span class="stat__number stat__number--green">
+        {{ stats.total_users }}+
+      </span>
+      <span class="stat__label">Utilisateurs actifs</span>
+    </div>
+
+    <div class="stat">
+      <span class="stat__number stat__number--orange">
+        {{ stats.categories }}
+      </span>
+      <span class="stat__label">Catégories thématiques</span>
+    </div>
+
+  </div>
 </section>
 
 <!-- CTA BANNER (image 7 + 8) -->

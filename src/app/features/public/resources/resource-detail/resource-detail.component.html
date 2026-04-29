@@ -1,44 +1,36 @@
-
 <div class="detail">
   @if (resource(); as res) {
-    <!-- Retour -->
-    <a routerLink="/resources" class="detail__back">
-      ← Retour au catalogue
-    </a>
 
-    <div class="detail__layout">
+  <a routerLink="/resources" class="detail__back">
+    ← Retour au catalogue
+  </a>
 
-      <!-- Contenu principal -->
+  <div class="detail__layout">
+
+    <!-- COLONNE GAUCHE -->
+    <div class="detail__content">
+
+      <!-- ARTICLE -->
       <article class="detail__main">
+
         <div class="detail__badges">
-          <span class="badge" [class]="getTypeBadgeClass(res.type)">{{ res.type | titlecase }}</span>
+          <span class="badge" [class]="getTypeBadgeClass(res.type)">
+            {{ res.type | titlecase }}
+          </span>
+
           @if (res.category) {
-            <span class="badge badge--gray">{{ res.category.name }}</span>
+          <span class="badge badge--gray">
+            {{ res.category.name }}
+          </span>
           }
         </div>
 
         <h1 class="detail__title">{{ res.title }}</h1>
 
         <div class="detail__meta">
-          <span class="detail__meta-item">
-            <svg viewBox="0 0 20 20" fill="currentColor" width="14" height="14">
-              <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/>
-            </svg>
-            {{ res.author.firstname }} {{ res.author.lastname }}
-          </span>
-          <span class="detail__meta-item">
-            <svg viewBox="0 0 20 20" fill="currentColor" width="14" height="14">
-              <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/>
-            </svg>
-            {{ res.createdAt | date:'dd/MM/yyyy' }}
-          </span>
-          <span class="detail__meta-item">
-            <svg viewBox="0 0 20 20" fill="currentColor" width="14" height="14">
-              <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
-              <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/>
-            </svg>
-            2103 vues
-          </span>
+          <span>{{ res.author.firstname }} {{ res.author.lastname }}</span>
+          <span>{{ res.createdAt | date:'dd/MM/yyyy' }}</span>
+          <span>2103 vues</span>
         </div>
 
         <hr class="detail__divider" />
@@ -62,94 +54,198 @@
           </div>
         </section>
 
-        <!-- Commentaires (image 10) -->
-        <section class="comments">
-          <h2 class="comments__title">Commentaires ({{ comments().length }})</h2>
-
-          @if (auth.isAuthenticated()) {
-            <div class="comments__form">
-              <textarea
-                [(ngModel)]="newComment"
-                placeholder="Écrire un commentaire..."
-                class="comments__textarea"
-                rows="3"
-              ></textarea>
-              <button class="btn btn--primary btn--sm" (click)="submitComment()">
-                Publier
-              </button>
-            </div>
-          } @else {
-            <div class="comments__login-prompt">
-              <p>Connectez-vous pour commenter</p>
-              <a routerLink="/auth/login" class="btn btn--outline btn--sm">Se connecter</a>
-            </div>
-          }
-
-          <div class="comments__list">
-            @for (comment of comments(); track comment.id) {
-              <div class="comment">
-                <div class="comment__avatar">{{ getInitial(comment.user.firstname) }}</div>
-                <div class="comment__body">
-                  <div class="comment__header">
-                    <span class="comment__name">{{ comment.user.firstname }} {{ comment.user.lastname }}</span>
-                    <span class="comment__date">{{ comment.createdAt | date:'dd/MM/yyyy' }}</span>
-                  </div>
-                  <p class="comment__text">{{ comment.content }}</p>
-                </div>
-              </div>
-            }
-          </div>
-        </section>
       </article>
 
-      <!-- Sidebar droite (image 9) -->
-      <aside class="detail__sidebar">
+      <!-- COMMENTAIRES -->
+      <section class="comments">
 
-        <!-- Actions -->
-        <div class="detail__sidebar-card">
-          <h3 class="detail__sidebar-title">Actions</h3>
+        <h2 class="comments__title">
+          Commentaires ({{ comments().length }})
+        </h2>
 
-          @if (auth.isAuthenticated()) {
-            <div class="action-buttons">
-              <button
-                class="action-btn"
-                [class.action-btn--active]="isFavorite()"
-                (click)="toggleFavorite()"
-              >
-                <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16">
-                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                </svg>
-                {{ isFavorite() ? 'Retirer des favoris' : 'Ajouter aux favoris' }}
-              </button>
+        @if (auth.isAuthenticated()) {
+        <div class="comments__form">
+          <textarea [(ngModel)]="newComment" class="comments__textarea" rows="3"
+            placeholder="Écrire un commentaire..."></textarea>
 
-              @if (isAuthor()) {
-                <a [routerLink]="['/citizen/resources', res.id, 'edit']" class="action-btn">
-                  ✏️ Modifier
-                </a>
-              }
-            </div>
-          } @else {
-            <p class="detail__sidebar-hint">Connectez-vous pour interagir</p>
-            <a routerLink="/auth/login" class="btn btn--primary" style="width:100%; text-align:center; display:block">
-              Se connecter
-            </a>
-          }
+          <button class="btn btn--primary btn--sm" (click)="submitComment()">
+            Publier
+          </button>
         </div>
+        } @else {
+        <div class="comments__login-prompt">
+          <p>Connectez-vous pour commenter</p>
+          <a routerLink="/auth/login" class="btn btn--outline btn--sm">
+            Se connecter
+          </a>
+        </div>
+        }
 
-        <!-- Auteur -->
-        <div class="detail__sidebar-card">
-          <h3 class="detail__sidebar-title">Auteur</h3>
-          <div class="author">
-            <div class="author__avatar">{{ getInitial(res.author.firstname) }}</div>
-            <div>
-              <p class="author__name">{{ res.author.firstname }} {{ res.author.lastname }}</p>
-              <p class="author__role">Contributeur</p>
+        <div class="comments__list" [class.comments__list--scroll]="comments().length > 10">
+
+          @for (comment of comments(); track comment.id) {
+
+          @if (!comment.parentId) {
+
+          <div class="comment">
+
+            <div class="comment__avatar">
+              {{ getInitial(comment.user.firstname) }}
+            </div>
+
+            <div class="comment__body">
+
+              <!-- HEADER -->
+              <div class="comment__header">
+
+                <div class="comment__info">
+                  <span class="comment__name">
+                    {{ comment.user.firstname }} {{ comment.user.lastname }}
+                  </span>
+
+                  <span class="comment__date">
+                    {{ comment.createdAt | date:'dd/MM/yyyy' }}
+                  </span>
+                </div>
+
+                @if (auth.currentUser()?.roles?.includes('ROLE_USER')) {
+                <button class="comment__edit-btn" (click)="startReply(comment)">
+                  ✏️
+                </button>
+                }
+
+              </div>
+
+              <p class="comment__text">
+                {{ comment.content }}
+              </p>
+
+              <!-- zone réponse -->
+              @if (replyingTo()?.id === comment.id) {
+              <div class="comment__reply-box">
+
+                <textarea [(ngModel)]="replyContent" class="comments__textarea" rows="2"
+                  placeholder="Votre réponse..."></textarea>
+
+                <button class="btn btn--primary btn--sm" (click)="submitReply(comment)">
+                  Envoyer
+                </button>
+
+                <button class="btn btn--outline btn--sm" (click)="cancelReply()">
+                  Annuler
+                </button>
+
+              </div>
+              }
+
+              <!-- bouton voir réponses -->
+              @if (getReplies(comment.id).length > 0) {
+              <button class="comment__show-replies" (click)="toggleReplies(comment.id)">
+                @if (expandedReplies()[comment.id] !== true) {
+                Voir les réponses ({{ getReplies(comment.id).length }})
+                } @else {
+                Masquer les réponses
+                }
+              </button>
+              }
+
+              <!-- réponses -->
+              @if (expandedReplies()[comment.id] === true) {
+
+              <div class="comment__replies">
+
+
+
+                @for (reply of getReplies(comment.id); track reply.id) {
+
+                <div class="comment comment--reply">
+
+                  <div class="comment__avatar">
+                    {{ getInitial(reply.user.firstname) }}
+                  </div>
+
+                  <div class="comment__body">
+
+                    <!-- HEADER IDENTIQUE AUX COMMENTS -->
+                    <div class="comment__header">
+
+                      <div class="comment__info">
+                        <span class="comment__name">
+                          {{ reply.user.firstname }} {{ reply.user.lastname }}
+                        </span>
+
+                        <span class="comment__date">
+                          {{ reply.createdAt | date:'dd/MM/yyyy' }}
+                        </span>
+                      </div>
+
+                    </div>
+
+                    <p class="comment__text">
+                      {{ reply.content }}
+                    </p>
+
+                  </div>
+
+                </div>
+
+                }
+
+              </div>
+
+              }
+
             </div>
           </div>
-        </div>
 
-      </aside>
+          }
+
+          }
+
+        </div>
+      </section>
+
     </div>
+
+    <!-- SIDEBAR -->
+    <aside class="detail__sidebar">
+
+      <div class="detail__sidebar-card">
+        <h3>Actions</h3>
+
+        @if (auth.isAuthenticated()) {
+        <div class="action-buttons">
+
+          <button class="action-btn" [class.action-btn--active]="isFavorite()" (click)="toggleFavorite()">
+            Favori
+          </button>
+
+          @if (isAuthor()) {
+          <a [routerLink]="['/citizen/resources', res.id, 'edit']" class="action-btn">
+            Modifier
+          </a>
+          }
+
+        </div>
+        }
+      </div>
+
+      <div class="detail__sidebar-card">
+        <h3>Auteur</h3>
+
+        <div class="author">
+          <div class="author__avatar">
+            {{ getInitial(res.author.firstname) }}
+          </div>
+
+          <div>
+            <p>{{ res.author.firstname }} {{ res.author.lastname }}</p>
+          </div>
+        </div>
+      </div>
+
+    </aside>
+
+  </div>
   }
 </div>
-

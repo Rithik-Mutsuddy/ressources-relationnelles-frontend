@@ -248,3 +248,91 @@ $blue: #2563eb;
   &--outline  { background: #fff; color: #374151; border: 1.5px solid #d1d5db; &:hover { border-color: $blue; color: $blue; } }
   &--sm       { padding: 7px 14px; font-size: 13px; }
 }
+
+.comment__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.comment__info {
+  display: flex;
+  flex-direction: column;
+}
+
+.comment__edit-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  opacity: 0.6;
+  transition: 0.2s;
+}
+
+.comment__edit-btn:hover {
+  opacity: 1;
+}
+
+.comment__replies {
+  background: transparent;
+  margin-left: 40px;
+  border-left: 2px solid #e5e5e5;
+  padding-left: 15px;
+  margin-top: 10px;
+}
+
+.comment--reply {
+  margin-top: 10px;
+  opacity: 0.95;
+}
+
+.comment__show-replies {
+  margin-top: 6px;
+  font-size: 14px;
+  color: #374151; // même couleur que le texte du commentaire
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+
+  font-family: inherit;
+  text-align: left;
+
+  transition: color 0.15s ease;
+}
+
+.comment__show-replies:hover {
+  color: $blue;
+  text-decoration: underline;
+}
+
+.comments__list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Activation scroll seulement si > 10 commentaires */
+.comments__list--scroll {
+  max-height: 600px;
+  overflow-y: auto;
+  padding-right: 6px;
+}
+
+/* Scrollbar stylée (optionnel mais propre) */
+.comments__list--scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.comments__list--scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.comments__list--scroll::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 10px;
+}
+
+.comments__list--scroll::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
