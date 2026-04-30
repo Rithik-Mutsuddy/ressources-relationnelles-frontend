@@ -37,6 +37,7 @@ export class ResourceDetailComponent implements OnInit {
   replyContent = signal('');
 
   isAside = signal(false);
+  openMenuId: number | null = null;
 
   expandedReplies = signal<Record<number, boolean>>({});
 
@@ -103,6 +104,10 @@ export class ResourceDetailComponent implements OnInit {
     }));
   }
 
+  toggleMenu(id: number) {
+    this.openMenuId = this.openMenuId === id ? null : id;
+  }
+
   getReplies(parentId: number): Comment[] {
     return this.comments().filter(c => c.parentId === parentId);
   }
@@ -154,5 +159,19 @@ export class ResourceDetailComponent implements OnInit {
       guide: 'badge--green',
       activity: 'badge--orange'
     }[type] ?? 'badge--blue';
+  }
+
+  reportComment(comment: any) {
+    this.commentSvc.report(comment.id,this.resource()!.id).subscribe(() => {
+      this.openMenuId = null;
+      this.showToast('Commentaire signalé', 'reject');
+    });
+  }
+
+  toast = signal<{ msg: string; type: 'signalé' | 'reject' } | null>(null);
+
+  private showToast(msg: string, type: 'signalé' | 'reject') {
+    this.toast.set({ msg, type });
+    setTimeout(() => this.toast.set(null), 3000);
   }
 }

@@ -7,6 +7,7 @@ import { environment } from '../../../environnement/environment';
 export class InteractionService {
   private http = inject(HttpClient);
   private API = `${environment.apiUrl}/resources`;
+  private API_MODERATOR = `${environment.apiUrl}/moderator`;
 
   getByResource(resourceId: number) {
     return this.http.get<ResourceInteraction[]>(`${this.API}/${resourceId}/interactions`);
@@ -24,7 +25,11 @@ export class InteractionService {
     return this.http.get<any[]>(`${this.API}/pending`);
   }
 
-   getDraft() {
+  getPendingAll() {
+    return this.http.get<any[]>(`${this.API_MODERATOR}/pendingAll`);
+  }
+
+  getDraft() {
     return this.http.get<any[]>(`${this.API}/draft`);
   }
 
