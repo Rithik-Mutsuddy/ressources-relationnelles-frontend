@@ -6,10 +6,26 @@ import { environment } from '../../../environnement/environment';
 @Injectable({ providedIn: 'root' })
 export class InteractionService {
   private http = inject(HttpClient);
-  private API  = `${environment.apiUrl}/resources`;
+  private API = `${environment.apiUrl}/resources`;
 
   getByResource(resourceId: number) {
     return this.http.get<ResourceInteraction[]>(`${this.API}/${resourceId}/interactions`);
+  }
+
+  getFavorites() {
+    return this.http.get<any[]>(`${this.API}/favorites`);
+  }
+
+  getAsides() {
+    return this.http.get<any[]>(`${this.API}/favorites/aside`);
+  }
+
+  getPending() {
+    return this.http.get<any[]>(`${this.API}/pending`);
+  }
+
+   getDraft() {
+    return this.http.get<any[]>(`${this.API}/draft`);
   }
 
   interact(resourceId: number, type: InteractionType) {

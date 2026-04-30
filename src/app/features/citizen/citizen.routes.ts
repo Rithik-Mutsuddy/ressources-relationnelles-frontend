@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 import { CitizenLayoutComponent } from './citizen-layout/citizen-layout.component';
 
 export const CITIZEN_ROUTES: Routes = [
- {
+  {
     path: '',
     component: CitizenLayoutComponent,
     children: [
@@ -28,11 +28,7 @@ export const CITIZEN_ROUTES: Routes = [
         loadComponent: () =>
           import('./favorites/favorites.component').then(m => m.FavoritesComponent)
       },
-     /* {
-        path: 'progress',
-        loadComponent: () =>
-          import('./progress/progress.component').then(m => m.ProgressComponent)
-      },*/
+
       {
         path: 'profile',
         loadComponent: () =>
@@ -50,6 +46,11 @@ export const CITIZEN_ROUTES: Routes = [
           import('./activities/activity-detail/activity-detail.component')
             .then(m => m.ActivityDetailComponent)
       },*/
+      /* {
+   path: 'progress',
+   loadComponent: () =>
+     import('./progress/progress.component').then(m => m.ProgressComponent)
+ },*/
     ]
   }
 ];

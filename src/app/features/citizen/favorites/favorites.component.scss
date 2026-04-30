@@ -3,11 +3,29 @@ $blue: #2563eb;
 .page-header {
   margin-bottom: 1.5rem;
 
-  h1 { display: flex; align-items: center; gap: 10px; font-size: 1.75rem; font-weight: 700; color: #111827; margin: 0 0 4px; }
+  h1 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #111827;
+    margin: 0 0 4px;
+  }
 }
 
-.page-title { font-size: 1.75rem; font-weight: 700; color: #111827; margin: 0 0 4px; }
-.page-sub   { font-size: 14px; color: #6b7280; margin: 0; }
+.page-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 4px;
+}
+
+.page-sub {
+  font-size: 14px;
+  color: #6b7280;
+  margin: 0;
+}
 
 .empty-favorites {
   background: #f3f4f6;
@@ -19,8 +37,18 @@ $blue: #2563eb;
   gap: 12px;
   text-align: center;
 
-  &__title { font-size: 1rem; font-weight: 500; color: #374151; margin: 0; }
-  &__sub   { font-size: 14px; color: #9ca3af; margin: 0; }
+  &__title {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #374151;
+    margin: 0;
+  }
+
+  &__sub {
+    font-size: 14px;
+    color: #9ca3af;
+    margin: 0;
+  }
 }
 
 .btn {
@@ -33,5 +61,129 @@ $blue: #2563eb;
   cursor: pointer;
   border: none;
   text-decoration: none;
-  &--primary { background: $blue; color: #fff; &:hover { background: #1d4ed8; } }
+
+  &--primary {
+    background: $blue;
+    color: #fff;
+
+    &:hover {
+      background: #1d4ed8;
+    }
+  }
+}
+
+// Ressources populaires 
+.popular {
+  padding: 60px 2rem;
+  background: #f9fafb;
+  max-width: 1100px;
+  margin: 0 auto;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 2rem;
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+}
+
+.resource-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 20px;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: box-shadow 0.15s;
+
+  &:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  }
+
+  &__header {
+    display: flex;
+  }
+
+  &__title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #111827;
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  &__desc {
+    font-size: 13px;
+    color: #6b7280;
+    line-height: 1.6;
+    margin: 0;
+    flex: 1;
+  }
+
+  &__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: auto;
+  }
+
+  &__views {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 13px;
+    color: #9ca3af;
+  }
+
+  &__tags {
+    display: flex;
+    gap: 6px;
+  }
+}
+
+// Badges 
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+
+  &--blue {
+    background: #eff6ff;
+    color: #1d4ed8;
+  }
+
+  &--purple {
+    background: #f5f3ff;
+    color: #6d28d9;
+  }
+
+  &--green {
+    background: #ecfdf5;
+    color: #065f46;
+  }
+
+  &--orange {
+    background: #fff7ed;
+    color: #c2410c;
+  }
+}
+
+.tag {
+  background: #f3f4f6;
+  color: #374151;
+  border-radius: 4px;
+  padding: 3px 8px;
+  font-size: 12px;
 }
