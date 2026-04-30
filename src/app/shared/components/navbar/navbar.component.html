@@ -46,9 +46,21 @@
     <!-- === CONNECTÉ === -->
     @else {
     <!-- Administration -->
-    @if (isModerator() || isAdmin() || isSuperAdmin()) {
+    @if ( isSuperAdmin()) {
+    <button class="navbar__btn navbar__btn--ghost" (click)="navigateToBackoffice()">
+      Super Administration
+    </button>
+    }
+
+    @if ( isAdmin() ) {
     <button class="navbar__btn navbar__btn--ghost" (click)="navigateToBackoffice()">
       Administration
+    </button>
+    }
+
+    @if (isModerator() ) {
+    <button class="navbar__btn navbar__btn--ghost" (click)="navigateToBackoffice()">
+      Moderateur
     </button>
     }
 

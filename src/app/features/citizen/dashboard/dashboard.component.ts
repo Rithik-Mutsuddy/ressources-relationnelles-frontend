@@ -14,9 +14,9 @@ import { Resource } from '../../../core/models/resource.model';
   styleUrl: './dashboard.component.scss'
 })
 export class DashboardComponent implements OnInit {
-  auth            = inject(AuthService);
-  private resSvc  = inject(ResourceService);
-
+  auth = inject(AuthService);
+  private resSvc = inject(ResourceService);
+  private interactionSvc = inject(InteractionService);
   user = this.auth.currentUser;
 
   // Statistiques des cartes
@@ -30,12 +30,24 @@ export class DashboardComponent implements OnInit {
   // Activité récente (ressources consultées)
   recentActivity = signal<Resource[]>([]);
 
+
   // À lire plus tard (ressources "aside")
   readLater = signal<Resource[]>([]);
+
+  asides = signal<any[]>([]);
 
   ngOnInit() {
     this.resSvc.getAll().subscribe(r => {
       this.recentActivity.set(r.slice(0, 3));
+    });
+
+    this.interactionSvc.getAsides().subscribe(data => {
+      this.asides.set(data);
+
+      // 👉 transformation vers Resource[]
+      this.readLater.set(
+        data.map(i => i.resource)
+      );
     });
   }
 

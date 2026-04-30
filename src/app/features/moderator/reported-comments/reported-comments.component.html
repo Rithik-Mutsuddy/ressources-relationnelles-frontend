@@ -1,0 +1,128 @@
+@if (toast()) {
+  <div class="toast"
+       [class.toast--green]="toast()!.type === 'validate'"
+       [class.toast--red]="toast()!.type === 'reject'">
+
+    <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16">
+      <path fill-rule="evenodd"
+            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+            clip-rule="evenodd"/>
+    </svg>
+
+    {{ toast()!.msg }}
+  </div>
+}
+
+<div class="res-page">
+
+  <!-- En-tête -->
+  <div class="res-page__header">
+    <h1 class="page-title">Gestion des commentaires signalés</h1>
+    <p class="page-subtitle">Modérez et gérez tous les commentaires signalés</p>
+  </div>
+
+<div class="table-card">
+
+  <!-- Toolbar -->
+  <div class="table-toolbar">
+    <span class="table-toolbar__count">
+      Commentaires signalés ({{ comments().length }})
+    </span>
+  </div>
+
+  <!-- Table -->
+  <table class="table">
+
+    <!-- Header -->
+    <thead class="table__head">
+      <tr>
+        <th class="table__th">Commentaire</th>
+        <th class="table__th">Auteur</th>
+        <th class="table__th">Ressource</th>
+        <th class="table__th">Statut</th>
+        <th class="table__th table__th--right">Actions</th>
+      </tr>
+    </thead>
+
+    <!-- Body -->
+    <tbody class="table__body">
+
+      <!-- Loading -->
+      @if (loading()) {
+        <tr>
+          <td colspan="5" class="table__empty">
+            Chargement des commentaires...
+          </td>
+        </tr>
+      }
+
+      <!-- Empty -->
+      @else if (comments().length === 0) {
+        <tr>
+          <td colspan="5" class="table__empty">
+            Aucun commentaire signalé
+          </td>
+        </tr>
+      }
+
+      <!-- Data -->
+      @else {
+        @for (c of comments(); track c.id) {
+          <tr class="table__row">
+
+            <!-- Comment -->
+            <td class="table__td">
+              <p class="comment-content">
+                {{ c.content }}
+              </p>
+            </td>
+
+            <!-- Author -->
+            <td class="table__td table__td--muted">
+              {{ c.author?.firstname || '—' }}
+              {{ c.author?.lastname || '' }}
+            </td>
+
+            <!-- Resource -->
+            <td class="table__td table__td--muted">
+              {{ c.resource?.title || '—' }}
+            </td>
+
+            <!-- Status -->
+            <td class="table__td">
+              <span class="badge-status badge-status--yellow">
+                Signalé
+              </span>
+            </td>
+
+            <!-- Actions -->
+            <td class="table__td table__td--actions">
+
+              <!-- Validate -->
+              <button
+                class="action-icon action-icon--validate"
+                title="Valider le commentaire"
+                (click)="validate(c, $event)"
+              >
+                ✔
+              </button>
+
+              <!-- Reject -->
+              <button
+                class="action-icon action-icon--reject"
+                title="Supprimer le commentaire"
+                (click)="reject(c, $event)"
+              >
+                ✖
+              </button>
+
+            </td>
+
+          </tr>
+        }
+      }
+
+    </tbody>
+
+  </table>
+</div>

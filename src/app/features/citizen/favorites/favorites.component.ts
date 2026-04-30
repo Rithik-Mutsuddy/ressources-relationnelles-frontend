@@ -15,7 +15,30 @@ export class FavoritesComponent implements OnInit {
   favorites = signal<any[]>([]);
 
   ngOnInit() {
-    // En production : récupérer les interactions de type "favorite" de l'user
-    this.favorites.set([]);
+    this.svc.getFavorites().subscribe(res => {
+      this.favorites.set(res);
+    });
   }
-} 
+
+  getTypeBadgeClass(type: string): string {
+  const map: Record<string, string> = {
+    video: 'badge--purple',
+    article: 'badge--blue',
+    guide: 'badge--green',
+    podcast: 'badge--orange',
+    document: 'badge--green',
+  };
+  return map[type] ?? 'badge--blue';
+}
+
+getTypeLabel(type: string): string {
+  const map: Record<string, string> = {
+    video: 'Video',
+    article: 'Article',
+    guide: 'Guide',
+    podcast: 'Podcast',
+    document: 'Document',
+  };
+  return map[type] ?? type;
+}
+}

@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../core/auth/auth.service';
 import { ResourceService } from '../../../core/services/resource.service';
 import { Resource, ResourceStatus } from '../../../core/models/resource.model';
+import { InteractionService } from '../../../core/services/interaction.service';
 
 type TabKey = 'all' | 'published' | 'pending' | 'draft';
 
@@ -16,40 +17,58 @@ type TabKey = 'all' | 'published' | 'pending' | 'draft';
 })
 export class MyResourcesComponent implements OnInit {
   private resSvc = inject(ResourceService);
+  private intSvc = inject(InteractionService);
 
   activeTab = signal<TabKey>('all');
   allResources = signal<Resource[]>([]);
+  pendingResources = signal<Resource[]>([]);
+  draftResources = signal<Resource[]>([]);
 
   ngOnInit() {
     this.resSvc.getAll().subscribe(r => this.allResources.set(r));
+    this.intSvc.getPending().subscribe(r =>
+      this.pendingResources.set(r)
+    );
+    this.intSvc.getDraft().subscribe(r =>
+      this.draftResources.set(r)
+    );
   }
 
+
   get published() { return this.allResources().filter(r => r.status === 'published'); }
-  get pending()   { return this.allResources().filter(r => r.status === 'pending'); }
-  get drafts()    { return this.allResources().filter(r => r.status === 'draft' as any); }
+  get pending() {
+    return this.pendingResources().length
+      ? this.pendingResources()
+      : this.allResources().filter(r => r.status === 'pending');
+  }
+  get draft() {
+    return this.draftResources().length
+      ? this.draftResources()
+      : this.allResources().filter(r => r.status === 'draft' as any);
+  }
 
   get displayed(): Resource[] {
     switch (this.activeTab()) {
       case 'published': return this.published;
-      case 'pending':   return this.pending;
-      case 'draft':     return this.drafts;
-      default:          return this.allResources();
+      case 'pending': return this.pending;
+      case 'draft': return this.draft;
+      default: return this.allResources();
     }
   }
 
   tabs(): { key: TabKey; label: string; count: number }[] {
     return [
-      { key: 'all',       label: 'Toutes',    count: this.allResources().length },
-      { key: 'published', label: 'Publiées',  count: this.published.length },
-      { key: 'pending',   label: 'En attente',count: this.pending.length },
-      { key: 'draft',     label: 'Brouillons',count: this.drafts.length },
+      { key: 'all', label: 'Toutes', count: this.allResources().length },
+      { key: 'published', label: 'Publiées', count: this.published.length },
+      { key: 'pending', label: 'En attente', count: this.pending.length },
+      { key: 'draft', label: 'Brouillons', count: this.draft.length },
     ];
   }
 
   getTypeBadgeClass(type: string) {
     const m: Record<string, string> = {
       video: 'badge--purple', article: 'badge--blue',
-      guide: 'badge--green',  activity: 'badge--orange'
+      guide: 'badge--green', activity: 'badge--orange'
     };
     return m[type] ?? 'badge--blue';
   }
@@ -64,9 +83,9 @@ export class MyResourcesComponent implements OnInit {
   getStatusBadgeClass(status: string) {
     const m: Record<string, string> = {
       published: 'status--published',
-      pending:   'status--pending',
-      rejected:  'status--rejected',
-      draft:     'status--draft',
+      pending: 'status--pending',
+      rejected: 'status--rejected',
+      draft: 'status--draft',
     };
     return m[status] ?? '';
   }

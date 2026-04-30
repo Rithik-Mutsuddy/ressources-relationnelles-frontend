@@ -1,20 +1,91 @@
 <div class="page-header">
   <h1 class="page-title">
     <svg viewBox="0 0 20 20" fill="#ef4444" width="28" height="28">
-      <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"/>
+      <path fill-rule="evenodd"
+        d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
+        clip-rule="evenodd" />
     </svg>
     Mes favoris
   </h1>
-  <p class="page-sub">Retrouvez toutes vos ressources favorites en un seul endroit</p>
+  <p class="page-sub">
+    Retrouvez toutes vos ressources favorites en un seul endroit
+  </p>
 </div>
 
+<!-- AUCUN FAVORI -->
 @if (favorites().length === 0) {
+
   <div class="empty-favorites">
     <svg viewBox="0 0 20 20" fill="none" stroke="#d1d5db" stroke-width="1.2" width="56" height="56">
-      <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"/>
+      <path fill-rule="evenodd"
+        d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
+        clip-rule="evenodd" />
     </svg>
-    <p class="empty-favorites__title">Vous n'avez pas encore de favoris</p>
-    <p class="empty-favorites__sub">Explorez le catalogue et ajoutez vos ressources préférées</p>
-    <a routerLink="/resources" class="btn btn--primary">Explorer le catalogue</a>
+
+    <p class="empty-favorites__title">
+      Vous n'avez pas encore de favoris
+    </p>
+
+    <p class="empty-favorites__sub">
+      Explorez le catalogue et ajoutez vos ressources préférées
+    </p>
+
+    <a routerLink="/resources" class="btn btn--primary">
+      Explorer le catalogue
+    </a>
   </div>
+
+}
+
+<!-- LISTE DES FAVORIS -->
+@else {
+
+<section class="popular">
+
+  <div class="popular__grid">
+
+    @for (fav of favorites(); track fav.id) {
+
+    <a class="resource-card" [routerLink]="['/resources', fav.id]">
+
+      <div class="resource-card__header">
+        <span class="badge" [class]="getTypeBadgeClass(fav.type)">
+          {{ getTypeLabel(fav.type) }}
+        </span>
+      </div>
+
+      <h3 class="resource-card__title">
+        {{ fav.title }}
+      </h3>
+
+      <p class="resource-card__desc">
+        {{ fav.content | slice:0:120 }}...
+      </p>
+
+      <div class="resource-card__footer">
+
+        <span class="resource-card__views">
+          <svg viewBox="0 0 20 20" fill="currentColor" width="14" height="14">
+            <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+            <path fill-rule="evenodd"
+              d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
+              clip-rule="evenodd" />
+          </svg>
+          {{ fav.views ?? 0 }}
+        </span>
+
+        <div class="resource-card__tags">
+          <span class="tag">favori</span>
+        </div>
+
+      </div>
+
+    </a>
+
+    }
+
+  </div>
+
+</section>
+
 }

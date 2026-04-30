@@ -36,6 +36,9 @@ export class ResourceDetailComponent implements OnInit {
   replyingTo = signal<Comment | null>(null);
   replyContent = signal('');
 
+  isAside = signal(false);
+  openMenuId: number | null = null;
+
   expandedReplies = signal<Record<number, boolean>>({});
 
   ngOnInit() {
@@ -48,6 +51,13 @@ export class ResourceDetailComponent implements OnInit {
     this.commentSvc.getByResource(id).subscribe(comments => {
       this.comments.set(comments);
     });
+
+    if (this.auth.isAuthenticated()) {
+      this.interactionSvc.getByResource(id).subscribe(interactions => {
+        this.isFavorite.set(interactions.some(i => i.type === 'favorite'));
+        this.isAside.set(interactions.some(i => i.type === 'aside'));
+      });
+    }
   }
 
   submitComment() {
@@ -94,6 +104,10 @@ export class ResourceDetailComponent implements OnInit {
     }));
   }
 
+  toggleMenu(id: number) {
+    this.openMenuId = this.openMenuId === id ? null : id;
+  }
+
   getReplies(parentId: number): Comment[] {
     return this.comments().filter(c => c.parentId === parentId);
   }
@@ -104,10 +118,27 @@ export class ResourceDetailComponent implements OnInit {
 
     if (this.isFavorite()) {
       this.interactionSvc.remove(res.id, 'favorite')
-        .subscribe(() => this.isFavorite.set(false));
+        .subscribe(() => {
+          this.isFavorite.set(false);
+        });
     } else {
       this.interactionSvc.interact(res.id, 'favorite')
-        .subscribe(() => this.isFavorite.set(true));
+        .subscribe(() => {
+          this.isFavorite.set(true);
+        });
+    }
+  }
+
+  toggleAside() {
+    const res = this.resource();
+    if (!res) return;
+
+    if (this.isAside()) {
+      this.interactionSvc.remove(res.id, 'aside')
+        .subscribe(() => this.isAside.set(false));
+    } else {
+      this.interactionSvc.interact(res.id, 'aside')
+        .subscribe(() => this.isAside.set(true));
     }
   }
 
@@ -128,5 +159,19 @@ export class ResourceDetailComponent implements OnInit {
       guide: 'badge--green',
       activity: 'badge--orange'
     }[type] ?? 'badge--blue';
+  }
+
+  reportComment(comment: any) {
+    this.commentSvc.report(comment.id,this.resource()!.id).subscribe(() => {
+      this.openMenuId = null;
+      this.showToast('Commentaire signalé', 'reject');
+    });
+  }
+
+  toast = signal<{ msg: string; type: 'signalé' | 'reject' } | null>(null);
+
+  private showToast(msg: string, type: 'signalé' | 'reject') {
+    this.toast.set({ msg, type });
+    setTimeout(() => this.toast.set(null), 3000);
   }
 }
