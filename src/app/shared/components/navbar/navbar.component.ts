@@ -49,7 +49,7 @@ export class NavbarComponent {
   navigateToBackoffice() {
     const roles = this.user()?.roles ?? [];
     if (roles.includes('ROLE_SUPER_ADMIN')) this.router.navigate(['/superadmin/accounts']);
-    else if (roles.includes('ROLE_ADMIN')) this.router.navigate(['/admin/dashboard']);
+    else if (roles.includes('ROLE_ADMIN')) this.router.navigate(['/admin/resources']);
     else if (roles.includes('ROLE_MODERATOR')) this.router.navigate(['/moderator/pending']);
   }
 

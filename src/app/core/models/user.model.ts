@@ -13,6 +13,7 @@ export interface User {
   lastname: string;
   roles: UserRole[];
   authProvider: AuthProvider;
+  verified: boolean;
   isVerified: boolean;
   createdAt: string;
 }

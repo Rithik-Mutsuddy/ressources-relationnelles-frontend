@@ -20,6 +20,7 @@ export class AdminService {
   // Utilisateurs
   getUsers()             { return this.http.get(`${this.API}/users`); }
   banUser(id: number)    { return this.http.put(`${this.API}/users/${id}/ban`, {}); }
+  unbanUser(id: number)  { return this.http.put(`${this.API}/users/${id}/unban`, {}); }
   deleteUser(id: number) { return this.http.delete(`${this.API}/users/${id}`); }
 
   // Stats
