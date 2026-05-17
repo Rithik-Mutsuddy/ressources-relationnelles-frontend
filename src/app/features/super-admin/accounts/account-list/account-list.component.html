@@ -1,0 +1,147 @@
+<div class="accounts-page">
+
+  <!-- Header -->
+  <div class="accounts-page__header">
+    <h1 class="page-title">Gestion des comptes</h1>
+    <p class="page-subtitle">
+      Gérez les utilisateurs et leurs rôles
+    </p>
+  </div>
+
+  <!-- Table Card -->
+  <div class="table-card">
+
+    <!-- Toolbar -->
+    <div class="table-toolbar">
+
+      <span class="table-toolbar__count">
+        {{ filtered().length }} compte(s)
+      </span>
+
+      <div class="table-toolbar__right">
+
+        <!-- Search -->
+        <div class="search-bar">
+
+          <svg viewBox="0 0 20 20" fill="none" stroke="#9ca3af" stroke-width="2" width="16" height="16">
+            <circle cx="8" cy="8" r="5"></circle>
+            <path d="m14 14 4 4"></path>
+          </svg>
+
+          <input type="text" placeholder="Rechercher..." [(ngModel)]="search" class="search-bar__input" />
+
+        </div>
+
+        <!-- CREATE BUTTON -->
+        <button class="create-btn" routerLink="/superadmin/accounts/create">
+
+          <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16">
+
+            <path fill-rule="evenodd"
+              d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+              clip-rule="evenodd" />
+          </svg>
+
+          Créer un compte
+
+        </button>
+
+      </div>
+
+    </div>
+
+    <!-- TABLE -->
+    <table class="table">
+
+      <thead class="table__head">
+        <tr>
+          <th class="table__th">Utilisateur</th>
+          <th class="table__th">Email</th>
+          <th class="table__th">Rôle</th>
+          <th class="table__th">Créé le</th>
+        </tr>
+      </thead>
+
+      <tbody class="table__body">
+
+        @if (filtered().length === 0) {
+        <tr>
+          <td colspan="5" class="table__empty">
+            Aucun compte trouvé
+          </td>
+        </tr>
+        }
+
+        @else {
+
+        @for (a of filtered(); track a.id) {
+
+        <tr class="table__row">
+
+          <!-- User -->
+          <td class="table__td">
+
+            <div class="user-cell">
+
+              <div class="user-cell__avatar">
+                {{ getInitial(a) }}
+              </div>
+
+              <div class="user-cell__infos">
+                <span class="user-cell__name">
+                  {{ a.firstname }} {{ a.lastname }}
+                </span>
+              </div>
+
+            </div>
+
+          </td>
+
+          <!-- Email -->
+          <td class="table__td table__td--muted">
+            {{ a.email }}
+          </td>
+
+          <!-- Role -->
+          <td class="table__td">
+
+            <span [ngSwitch]="a.roles[0]">
+
+              <span *ngSwitchCase="'ROLE_MODERATOR'" class=" badge text-bg-warning">
+                MODERATOR
+              </span>
+
+              <span *ngSwitchCase="'ROLE_ADMIN'" class=" badge text-bg-primary">
+                ADMIN
+              </span>
+
+              <span *ngSwitchCase="'ROLE_SUPER_ADMIN'" class=" badge text-bg-danger">
+                SUPER ADMIN
+              </span>
+
+              <span *ngSwitchDefault class="badge text-bg-secondary">
+                USER
+              </span>
+
+            </span>
+
+          </td>
+
+          <!-- Date -->
+          <td class="table__td table__td--muted">
+            {{ a.createdAt | date:'dd/MM/yyyy' }}
+          </td>
+
+        </tr>
+
+        }
+
+        }
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+</div>
