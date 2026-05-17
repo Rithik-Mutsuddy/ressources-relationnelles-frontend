@@ -1,0 +1,21 @@
+.create {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 300px;
+
+  input, select {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+  }
+
+  button {
+    padding: 10px;
+    background: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+}

@@ -1,0 +1,229 @@
+<!-- Toast -->
+@if (toast()) {
+  <div class="toast toast--green">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16">
+      <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+    </svg>
+    {{ toast() }}
+  </div>
+}
+
+<div class="admin-page">
+
+  <!-- En-tête -->
+  <div class="admin-page__header">
+    <div>
+      <h1 class="page-title">Statistiques</h1>
+      <p class="page-subtitle">Consultez et exportez les indicateurs clés de la plateforme</p>
+    </div>
+
+    <button
+      class="btn btn--primary"
+      [disabled]="exporting() || loading()"
+      (click)="exportCSV()"
+    >
+      <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16">
+        <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"/>
+      </svg>
+      {{ exporting() ? 'Export en cours...' : 'Exporter en CSV' }}
+    </button>
+  </div>
+
+  @if (loading()) {
+    <div class="loading-block">
+      <div class="loading-block__spinner"></div>
+      <p>Chargement des statistiques...</p>
+    </div>
+  } @else if (stats(); as s) {
+
+    <!-- ── Cartes métriques principales ── -->
+    <div class="stats-grid">
+
+      <div class="stat-card">
+        <div class="stat-card__icon stat-card__icon--blue">
+          <svg viewBox="0 0 20 20" fill="currentColor" width="22" height="22">
+            <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd"/>
+          </svg>
+        </div>
+        <div class="stat-card__body">
+          <p class="stat-card__value">{{ s.total_resources }}</p>
+          <p class="stat-card__label">Ressources totales</p>
+          <p class="stat-card__sub">Toutes statuts confondus</p>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-card__icon stat-card__icon--green">
+          <svg viewBox="0 0 20 20" fill="currentColor" width="22" height="22">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+          </svg>
+        </div>
+        <div class="stat-card__body">
+          <p class="stat-card__value stat-card__value--green">{{ s.published }}</p>
+          <p class="stat-card__label">Publiées</p>
+          <p class="stat-card__sub">{{ getPublishedPercent() }}% du total</p>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-card__icon stat-card__icon--yellow">
+          <svg viewBox="0 0 20 20" fill="currentColor" width="22" height="22">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
+          </svg>
+        </div>
+        <div class="stat-card__body">
+          <p class="stat-card__value stat-card__value--yellow">{{ s.pending }}</p>
+          <p class="stat-card__label">En attente</p>
+          <p class="stat-card__sub">{{ getPendingPercent() }}% du total</p>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-card__icon stat-card__icon--purple">
+          <svg viewBox="0 0 20 20" fill="currentColor" width="22" height="22">
+            <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"/>
+          </svg>
+        </div>
+        <div class="stat-card__body">
+          <p class="stat-card__value stat-card__value--purple">{{ s.total_users }}</p>
+          <p class="stat-card__label">Utilisateurs inscrits</p>
+          <p class="stat-card__sub">Comptes citoyens actifs</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ── Graphique en barres (CSS pur) ── -->
+    <div class="chart-card">
+      <h2 class="chart-card__title">Répartition des ressources</h2>
+      <p class="chart-card__subtitle">Distribution par statut de publication</p>
+
+      <div class="bar-chart">
+
+        <div class="bar-chart__row">
+          <span class="bar-chart__label">Publiées</span>
+          <div class="bar-chart__track">
+            <div
+              class="bar-chart__fill bar-chart__fill--green"
+              [style.width.%]="getPublishedPercent()"
+            ></div>
+          </div>
+          <span class="bar-chart__count">{{ s.published }} ({{ getPublishedPercent() }}%)</span>
+        </div>
+
+        <div class="bar-chart__row">
+          <span class="bar-chart__label">En attente</span>
+          <div class="bar-chart__track">
+            <div
+              class="bar-chart__fill bar-chart__fill--yellow"
+              [style.width.%]="getPendingPercent()"
+            ></div>
+          </div>
+          <span class="bar-chart__count">{{ s.pending }} ({{ getPendingPercent() }}%)</span>
+        </div>
+
+        <div class="bar-chart__row">
+          <span class="bar-chart__label">Autres</span>
+          <div class="bar-chart__track">
+            <div
+              class="bar-chart__fill bar-chart__fill--gray"
+              [style.width.%]="getOtherPercent()"
+            ></div>
+          </div>
+          <span class="bar-chart__count">
+            {{ s.total_resources - s.published - s.pending }}
+            ({{ getOtherPercent() }}%)
+          </span>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── Tableau détaillé exportable ── -->
+    <div class="table-card">
+      <div class="table-card__header">
+        <div>
+          <h2 class="table-card__title">Tableau récapitulatif</h2>
+          <p class="table-card__subtitle">
+            Données au {{ today | date:'dd MMMM yyyy' : '' : 'fr' }}
+          </p>
+        </div>
+        <button class="btn btn--outline btn--sm" (click)="exportCSV()" [disabled]="exporting()">
+          <svg viewBox="0 0 20 20" fill="currentColor" width="14" height="14">
+            <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"/>
+          </svg>
+          Exporter
+        </button>
+      </div>
+
+      <table class="table">
+        <thead class="table__head">
+          <tr>
+            <th class="table__th">Métrique</th>
+            <th class="table__th">Valeur</th>
+            <th class="table__th">Part</th>
+            <th class="table__th">Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="table__row">
+            <td class="table__td"><strong>Total ressources</strong></td>
+            <td class="table__td">
+              <span class="metric-value">{{ s.total_resources }}</span>
+            </td>
+            <td class="table__td table__td--muted">100%</td>
+            <td class="table__td table__td--muted">Toutes ressources confondues</td>
+          </tr>
+          <tr class="table__row">
+            <td class="table__td"><strong>Publiées</strong></td>
+            <td class="table__td">
+              <span class="metric-value metric-value--green">{{ s.published }}</span>
+            </td>
+            <td class="table__td">
+              <div class="mini-bar">
+                <div class="mini-bar__fill mini-bar__fill--green" [style.width.%]="getPublishedPercent()"></div>
+              </div>
+              <span class="table__td--muted">{{ getPublishedPercent() }}%</span>
+            </td>
+            <td class="table__td table__td--muted">Visibles par tous les utilisateurs</td>
+          </tr>
+          <tr class="table__row">
+            <td class="table__td"><strong>En attente</strong></td>
+            <td class="table__td">
+              <span class="metric-value metric-value--yellow">{{ s.pending }}</span>
+            </td>
+            <td class="table__td">
+              <div class="mini-bar">
+                <div class="mini-bar__fill mini-bar__fill--yellow" [style.width.%]="getPendingPercent()"></div>
+              </div>
+              <span class="table__td--muted">{{ getPendingPercent() }}%</span>
+            </td>
+            <td class="table__td table__td--muted">En attente de validation modérateur</td>
+          </tr>
+          <tr class="table__row">
+            <td class="table__td"><strong>Autres</strong></td>
+            <td class="table__td">
+              <span class="metric-value">{{ s.total_resources - s.published - s.pending }}</span>
+            </td>
+            <td class="table__td">
+              <div class="mini-bar">
+                <div class="mini-bar__fill mini-bar__fill--gray" [style.width.%]="getOtherPercent()"></div>
+              </div>
+              <span class="table__td--muted">{{ getOtherPercent() }}%</span>
+            </td>
+            <td class="table__td table__td--muted">Rejetées ou brouillons</td>
+          </tr>
+          <tr class="table__row table__row--divider">
+            <td class="table__td"><strong>Utilisateurs inscrits</strong></td>
+            <td class="table__td">
+              <span class="metric-value metric-value--purple">{{ s.total_users }}</span>
+            </td>
+            <td class="table__td table__td--muted">—</td>
+            <td class="table__td table__td--muted">Comptes citoyens enregistrés</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  }
+</div>

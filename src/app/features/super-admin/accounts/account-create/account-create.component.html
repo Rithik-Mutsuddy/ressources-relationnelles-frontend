@@ -1,0 +1,21 @@
+<div class="create">
+
+  <h1>Créer un compte</h1>
+
+  <input [(ngModel)]="form.firstname" type="text" placeholder="Prénom" />
+  <input [(ngModel)]="form.lastname" type="text" placeholder="Nom" />
+  <input [(ngModel)]="form.email" type="email" placeholder="Email" />
+  <input [(ngModel)]="form.password" type="password" placeholder="Mot de passe" />
+
+  <select [(ngModel)]="form.roles">
+
+    <option value="ROLE_USER">USER</option>
+    <option value="ROLE_MODERATOR">MODERATOR</option>
+    <option value="ROLE_ADMIN">ADMIN</option>
+    <option value="ROLE_SUPER_ADMIN">SUPER ADMIN</option>
+
+  </select>
+
+  <button (click)="submit()">Créer</button>
+
+</div>
