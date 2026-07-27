@@ -96,10 +96,21 @@
             "styles": [
               "src/styles.scss",
               "node_modules/bootstrap/dist/css/bootstrap.min.css"
+            ],
+            "karmaConfig": "karma.conf.js",
+            "codeCoverage": true,
+            "codeCoverageExclude": [
+              "src/environnement/**",
+              "src/**/*.model.ts",
+              "src/**/*.routes.ts",
+              "src/main.ts"
             ]
           }
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "10c1cb00-a4d7-4359-a923-bbf09d01fbb5"
   }
 }
